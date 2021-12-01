@@ -15,7 +15,7 @@ fn depth_measurement_slide_count(l: &Vec<u32>) -> usize {
 
 fn main() {
     common::time_func(|| {
-        let lines = common::read_input("input/day01.txt");
+        let lines = common::read_input::<u32>("input/day01.txt");
 
         let p1 = depth_measurement_count(&lines);
         let p2 = depth_measurement_slide_count(&lines);
