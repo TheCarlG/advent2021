@@ -6,13 +6,9 @@ fn main() {
 
         let mut prev = u32::MAX;
         let mut j = 0;
-        let mut i = if l[l.len() - 1] > l[l.len() - 2] {
-            1
-        } else {
-            0
-        };
+        let mut i = if l[0] < l[1] { 1 } else { 0 };
         l.windows(3).for_each(|x| {
-            if x[0] < x[1] {
+            if x[1] < x[2] {
                 i += 1;
             }
 
