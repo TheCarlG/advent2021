@@ -1,5 +1,4 @@
 use advent2021::common;
-use itermore::IterMore;
 use std::fs;
 
 fn main() {
@@ -12,19 +11,20 @@ fn main() {
             .expect("Unable to read day01.txt")
             .lines()
             .map(|v| v.parse::<u32>().unwrap())
-            .into_iter()
-            .windows::<3>()
-            .for_each(|[a, b, c]| {
-                if a < b || (i == 0 && b < c) {
+            .collect::<Vec<u32>>()
+            .windows(3)
+            .for_each(|x| {
+                if x[0] < x[1] || (i == 0 && x[1] < x[2]) {
                     i += 1;
                 }
 
-                let val = a + b + c;
+                let val = x.into_iter().sum();
                 if prev < val {
                     j += 1;
                 }
                 prev = val;
             });
+
         println!("Part 1: {}", i);
         println!("Part 2: {}", j);
     });
