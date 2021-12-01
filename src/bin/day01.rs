@@ -1,5 +1,4 @@
 use advent2021::common;
-use std::fs;
 
 fn main() {
     common::time_func(|| {
@@ -7,11 +6,7 @@ fn main() {
         let mut i = 0;
         let mut j = 0;
 
-        fs::read_to_string(r#"input/day01.txt"#)
-            .expect("Unable to read day01.txt")
-            .lines()
-            .map(|v| v.parse::<u32>().unwrap())
-            .collect::<Vec<u32>>()
+        common::read_input("input/day01.txt")
             .windows(3)
             .for_each(|x| {
                 if x[0] < x[1] || (i == 0 && x[1] < x[2]) {
