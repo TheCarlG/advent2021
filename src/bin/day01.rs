@@ -7,6 +7,7 @@ fn main() {
         let mut prev = u32::MAX;
         let mut j = 0;
         let mut i = if lines[0] < lines[1] { 1 } else { 0 };
+
         lines.windows(3).for_each(|x| {
             if x[1] < x[2] {
                 i += 1;
