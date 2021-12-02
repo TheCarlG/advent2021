@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-    - 'src/**'
 
 jobs:
   build:
@@ -41,13 +39,14 @@ jobs:
 
     - name: Send results to discord
       uses: sarisia/actions-status-discord@v1
+      if: ${{ secrets.DISCORD_WEBHOOK != '' }}
       with:
         webhook: ${{ secrets.DISCORD_WEBHOOK }}
         username: Github
         title: ${{github.actor}}
         nodetail: true
         description: |
-          **[${{github.repository}}](https://github.com/${{github.repository}})**
+          **[[${{github.repository}}:${{github.ref_name}}]](${{env.GITHUB_SERVER_URL}}/${{github.repository}}/commit/${{github.sha}}) New commit!**
 
           ${{join(steps.run.outputs.*, '
           ')}}
