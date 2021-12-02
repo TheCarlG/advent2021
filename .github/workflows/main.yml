@@ -40,4 +40,4 @@ jobs:
       with:
         webhook: ${{ secrets.DISCORD_WEBHOOK }}
         nodetail: true
-        description: ${{join(steps.Run.outputs.*, '\n')}}
+        description: "${{join(steps.Run.outputs.*, '\n')}}"
