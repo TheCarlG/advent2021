@@ -38,8 +38,9 @@ jobs:
       uses: sarisia/actions-status-discord@v1
       with:
         webhook: ${{ secrets.DISCORD_WEBHOOK }}
+        username: Github
         title: ${{github.actor}}
         nodetail: true
         description: |
-          [${{github.repository}}](https://github.com/${{github.repository}})
+          **[${{github.repository}}](https://github.com/${{github.repository}})**
           ${{join(steps.run.outputs.*, '\n')}}
