@@ -2,6 +2,8 @@
 
 This repository contains my solutions for Advent of Code 2021
 
+[![Build & Run](https://github.com/TheCarlG/advent2021/actions/workflows/main.yml/badge.svg)](https://github.com/TheCarlG/advent2021/actions/workflows/main.yml)
+
 ***
 
 ### Building
