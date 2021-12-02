@@ -20,16 +20,16 @@ impl FromStr for Command {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let parts: Vec<&str> = s.split(" ").collect();
+        let (d, s) = s.split_once(" ").unwrap();
 
-        let direction = match parts[0] {
+        let direction = match d {
             "forward" => Direction::Forward,
             "up" => Direction::Up,
             "down" => Direction::Down,
             _ => unreachable!(),
         };
 
-        let steps = parts[1].parse::<i32>().unwrap();
+        let steps = s.parse::<i32>().unwrap();
 
         Ok(Command { direction, steps })
     }
