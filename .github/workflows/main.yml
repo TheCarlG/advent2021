@@ -46,6 +46,7 @@ jobs:
         nodetail: true
         description: |
           **[${{github.repository}}:${{github.ref_name}}](https://github.com/${{github.repository}}/commit/${{github.sha}}) New commit!**
+
           ${{ github.event.head_commit.message }}
 
           ${{join(steps.run.outputs.*, '
