@@ -7,4 +7,6 @@ for e in $(find target/release/ -maxdepth 1 -executable -type f -name 'day*' | s
                 echo "::set-output name=$n-result-$i::  $(echo $l | tr '\n' ' ')"
                 ((i++))
         done
+        ((i++))
+        echo "::set-output name=$n-result-$i::-"
 done
