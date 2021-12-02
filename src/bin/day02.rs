@@ -9,7 +9,6 @@ enum Direction {
     Up,
     Down,
     Forward,
-    Backward,
 }
 
 struct Command {
@@ -25,7 +24,6 @@ impl FromStr for Command {
 
         let direction = match parts[0] {
             "forward" => Direction::Forward,
-            "backward" => Direction::Backward,
             "up" => Direction::Up,
             "down" => Direction::Down,
             _ => unreachable!(),
@@ -43,7 +41,6 @@ fn part1(l: &Vec<Command>) -> i32 {
         .fold((0 as i32, 0 as i32), |(mut x, mut y), v| {
             match v.direction {
                 Direction::Forward => x += v.steps,
-                Direction::Backward => x -= v.steps,
                 Direction::Up => y -= v.steps,
                 Direction::Down => y += v.steps,
             }
@@ -61,10 +58,6 @@ fn part2(l: &Vec<Command>) -> i32 {
                 Direction::Forward => {
                     x += v.steps;
                     y += v.steps * aim;
-                }
-                Direction::Backward => {
-                    x -= v.steps;
-                    y -= v.steps * aim;
                 }
                 Direction::Up => aim -= v.steps,
                 Direction::Down => aim += v.steps,
