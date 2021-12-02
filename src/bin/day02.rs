@@ -93,31 +93,23 @@ fn main() {
 mod tests {
     use super::*;
 
-    #[test]
-    fn test_part1() {
-        let data = "forward 5
+    const DATA: &str = "forward 5
 down 5
 forward 8
 up 3
 down 8
 forward 2";
 
-        let r = io::BufReader::new(data.as_bytes());
+    #[test]
+    fn test_part1() {
+        let r = io::BufReader::new(DATA.as_bytes());
         let lines = common::read_input::<Command, &[u8]>(r);
 
         assert_eq!(part1(&lines), 150);
     }
-
     #[test]
     fn test_part2() {
-        let data = "forward 5
-down 5
-forward 8
-up 3
-down 8
-forward 2";
-
-        let r = io::BufReader::new(data.as_bytes());
+        let r = io::BufReader::new(DATA.as_bytes());
         let lines = common::read_input::<Command, &[u8]>(r);
 
         assert_eq!(part2(&lines), 900);

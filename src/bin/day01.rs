@@ -32,9 +32,7 @@ fn main() {
 mod tests {
     use super::*;
 
-    #[test]
-    fn test_part1() {
-        let data = "199
+    const DATA: &str = "199
 200
 208
 210
@@ -45,7 +43,9 @@ mod tests {
 260
 263";
 
-        let r = io::BufReader::new(data.as_bytes());
+    #[test]
+    fn test_part1() {
+        let r = io::BufReader::new(DATA.as_bytes());
         let lines = common::read_input::<u32, &[u8]>(r);
 
         assert_eq!(part1(&lines), 7);
@@ -53,18 +53,7 @@ mod tests {
 
     #[test]
     fn test_part2() {
-        let data = "199
-200
-208
-210
-200
-207
-240
-269
-260
-263";
-
-        let r = io::BufReader::new(data.as_bytes());
+        let r = io::BufReader::new(DATA.as_bytes());
         let lines = common::read_input::<u32, &[u8]>(r);
 
         assert_eq!(part2(&lines), 5);
