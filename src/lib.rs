@@ -11,7 +11,7 @@ pub mod common {
         f();
         let duration = start.elapsed();
 
-        print!("Time: {:.7}ms", duration.as_secs_f64() * 1000.0);
+        println!("Time: {:.7}ms", duration.as_secs_f64() * 1000.0);
     }
 
     #[allow(dead_code)]
