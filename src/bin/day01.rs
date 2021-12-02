@@ -21,8 +21,8 @@ fn main() {
             let r = io::BufReader::new(f);
             let lines = common::read_input::<u32, File>(r);
 
-            println!("Part 1: {}", part1(&lines));
-            println!("Part 2: {}", part2(&lines));
+            println!("Part01: {}", part1(&lines));
+            println!("Part02: {}", part2(&lines));
         }
         Err(_) => unreachable!(),
     });
