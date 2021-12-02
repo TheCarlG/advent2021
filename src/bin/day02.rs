@@ -8,46 +8,35 @@ enum Direction {
 
 use advent2021::common;
 
-#[derive(Debug)]
-struct Command {
-    direction: Direction,
-    steps: i32,
-}
-
-impl Command {
-    fn new(direction_str: &str, steps: i32) -> Self {
-        let direction = match direction_str {
-            "forward" => Direction::Forward,
-            "backward" => Direction::Backward,
-            "up" => Direction::Up,
-            "down" => Direction::Down,
-            _ => {
-                println!("Invalid direction: {}", direction_str);
-                std::process::exit(1);
-            }
-        };
-        Self { direction, steps }
-    }
-}
-
-fn process_input(l: Vec<String>) -> Vec<Command> {
+fn process_input(l: Vec<String>) -> Vec<(Direction, i32)> {
     l.into_iter()
         .map(|x| {
             let parts: Vec<&str> = x.split(" ").collect();
-            Command::new(parts[0], parts[1].parse::<i32>().unwrap())
+
+            let direction = match parts[0] {
+                "forward" => Direction::Forward,
+                "backward" => Direction::Backward,
+                "up" => Direction::Up,
+                "down" => Direction::Down,
+                _ => unreachable!(),
+            };
+
+            let steps = parts[1].parse::<i32>().unwrap();
+
+            (direction, steps)
         })
-        .collect::<Vec<Command>>()
+        .collect::<Vec<(Direction, i32)>>()
 }
 
-fn part1(l: &Vec<Command>) -> i32 {
+fn part1(l: &Vec<(Direction, i32)>) -> i32 {
     let x = l
         .into_iter()
         .fold((0 as i32, 0 as i32), |(mut x, mut y), v| {
-            match v.direction {
-                Direction::Forward => x += v.steps,
-                Direction::Backward => x -= v.steps,
-                Direction::Up => y -= v.steps,
-                Direction::Down => y += v.steps,
+            match v.0 {
+                Direction::Forward => x += v.1,
+                Direction::Backward => x -= v.1,
+                Direction::Up => y -= v.1,
+                Direction::Down => y += v.1,
             }
             (x, y)
         });
@@ -55,21 +44,21 @@ fn part1(l: &Vec<Command>) -> i32 {
     x.0 * x.1
 }
 
-fn part2(l: &Vec<Command>) -> i32 {
+fn part2(l: &Vec<(Direction, i32)>) -> i32 {
     let x = l.into_iter().fold(
         (0 as i32, 0 as i32, 0 as i32),
         |(mut x, mut y, mut aim), v| {
-            match v.direction {
+            match v.0 {
                 Direction::Forward => {
-                    x += v.steps;
-                    y += v.steps * aim;
+                    x += v.1;
+                    y += v.1 * aim;
                 }
                 Direction::Backward => {
-                    x -= v.steps;
-                    y -= v.steps * aim;
+                    x -= v.1;
+                    y -= v.1 * aim;
                 }
-                Direction::Up => aim -= v.steps,
-                Direction::Down => aim += v.steps,
+                Direction::Up => aim -= v.1,
+                Direction::Down => aim += v.1,
             }
             (x, y, aim)
         },
@@ -93,7 +82,7 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        let test_data: Vec<Command> = process_input(vec![
+        let test_data = process_input(vec![
             "forward 5".to_string(),
             "down 5".to_string(),
             "forward 8".to_string(),
@@ -107,7 +96,7 @@ mod tests {
 
     #[test]
     fn test_part2() {
-        let test_data: Vec<Command> = process_input(vec![
+        let test_data = process_input(vec![
             "forward 5".to_string(),
             "down 5".to_string(),
             "forward 8".to_string(),
