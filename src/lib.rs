@@ -10,7 +10,7 @@ pub mod common {
         f();
         let duration = start.elapsed();
 
-        println!("Execution time is: {:?}", duration);
+        println!("Execution time is: {:?}ms", duration.as_secs_f64() * 1000.0);
     }
 
     pub fn read_input<T: FromStr, R: Read>(input: BufReader<R>) -> Vec<T> {
