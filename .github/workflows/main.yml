@@ -28,8 +28,9 @@ jobs:
         args: --release --bins
 
     - name: Run
+      id: run
       run: |
-        for e in $(find target/release/ -maxdepth 1 -executable -type f -name 'day*'); do
+        for e in $(find target/release/ -maxdepth 1 -executable -type f -name 'day*' | sort); do
           echo "## $e" | cut -d/ -f3
           $e
           echo ""
@@ -42,4 +43,4 @@ jobs:
         nodetail: true
         description: |
           Result:
-          ${{join(steps.Run.outputs.*, '\n')}}
+          ${{join(steps.run.outputs.*, '\n')}}
