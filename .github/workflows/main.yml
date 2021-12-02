@@ -1,0 +1,34 @@
+name: Rust Example
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Setup Rust
+      uses: icepuma/rust-action@master
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+
+    - name: Run tests
+      run: cargo test
+
+    - name: Build
+      run: cargo build --bins
+
+    - name: Run
+      run: |
+        for e in $(find target/release/ -maxdepth 1 -executable -type f -name 'day*'); do
+          echo "## $e" | cut -d/ -f3
+          $e
+          echo ""
+        done
+
+    - name: Send results to discord
+      uses: sarisia/actions-status-discord@v1
+      with:
+        nodetail: true
+        description: ${{ steps.Run.outputs.* }}
