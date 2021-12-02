@@ -40,5 +40,4 @@ jobs:
         webhook: ${{ secrets.DISCORD_WEBHOOK }}
         nodetail: true
         description: |
-          Result:
-          ${{join(steps.run.outputs.*, '\n')}}
+          ${{join(steps.run.outputs.*, "\n")}}
