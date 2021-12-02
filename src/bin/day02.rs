@@ -1,3 +1,9 @@
+use advent2021::common;
+use std::fs::File;
+use std::io;
+use std::str::FromStr;
+use std::string::ParseError;
+
 #[derive(Debug)]
 enum Direction {
     Up,
@@ -6,37 +12,40 @@ enum Direction {
     Backward,
 }
 
-use advent2021::common;
-
-fn process_input(l: Vec<String>) -> Vec<(Direction, i32)> {
-    l.into_iter()
-        .map(|x| {
-            let parts: Vec<&str> = x.split(" ").collect();
-
-            let direction = match parts[0] {
-                "forward" => Direction::Forward,
-                "backward" => Direction::Backward,
-                "up" => Direction::Up,
-                "down" => Direction::Down,
-                _ => unreachable!(),
-            };
-
-            let steps = parts[1].parse::<i32>().unwrap();
-
-            (direction, steps)
-        })
-        .collect::<Vec<(Direction, i32)>>()
+struct Command {
+    direction: Direction,
+    steps: i32,
 }
 
-fn part1(l: &Vec<(Direction, i32)>) -> i32 {
+impl FromStr for Command {
+    type Err = ParseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let parts: Vec<&str> = s.split(" ").collect();
+
+        let direction = match parts[0] {
+            "forward" => Direction::Forward,
+            "backward" => Direction::Backward,
+            "up" => Direction::Up,
+            "down" => Direction::Down,
+            _ => unreachable!(),
+        };
+
+        let steps = parts[1].parse::<i32>().unwrap();
+
+        Ok(Command { direction, steps })
+    }
+}
+
+fn part1(l: &Vec<Command>) -> i32 {
     let x = l
         .into_iter()
         .fold((0 as i32, 0 as i32), |(mut x, mut y), v| {
-            match v.0 {
-                Direction::Forward => x += v.1,
-                Direction::Backward => x -= v.1,
-                Direction::Up => y -= v.1,
-                Direction::Down => y += v.1,
+            match v.direction {
+                Direction::Forward => x += v.steps,
+                Direction::Backward => x -= v.steps,
+                Direction::Up => y -= v.steps,
+                Direction::Down => y += v.steps,
             }
             (x, y)
         });
@@ -44,21 +53,21 @@ fn part1(l: &Vec<(Direction, i32)>) -> i32 {
     x.0 * x.1
 }
 
-fn part2(l: &Vec<(Direction, i32)>) -> i32 {
+fn part2(l: &Vec<Command>) -> i32 {
     let x = l.into_iter().fold(
         (0 as i32, 0 as i32, 0 as i32),
         |(mut x, mut y, mut aim), v| {
-            match v.0 {
+            match v.direction {
                 Direction::Forward => {
-                    x += v.1;
-                    y += v.1 * aim;
+                    x += v.steps;
+                    y += v.steps * aim;
                 }
                 Direction::Backward => {
-                    x -= v.1;
-                    y -= v.1 * aim;
+                    x -= v.steps;
+                    y -= v.steps * aim;
                 }
-                Direction::Up => aim -= v.1,
-                Direction::Down => aim += v.1,
+                Direction::Up => aim -= v.steps,
+                Direction::Down => aim += v.steps,
             }
             (x, y, aim)
         },
@@ -68,11 +77,15 @@ fn part2(l: &Vec<(Direction, i32)>) -> i32 {
 }
 
 fn main() {
-    common::time_func(|| {
-        let lines = process_input(common::read_input::<String>("input/day02.txt"));
+    common::time_func(|| match File::open("input/day02.txt") {
+        Ok(f) => {
+            let r = io::BufReader::new(f);
+            let lines = common::read_input::<Command, File>(r);
 
-        println!("Part 1: {}", part1(&lines));
-        println!("Part 2: {}", part2(&lines));
+            println!("Part 1: {}", part1(&lines));
+            println!("Part 2: {}", part2(&lines));
+        }
+        Err(_) => unreachable!(),
     });
 }
 
@@ -82,29 +95,31 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        let test_data = process_input(vec![
-            "forward 5".to_string(),
-            "down 5".to_string(),
-            "forward 8".to_string(),
-            "up 3".to_string(),
-            "down 8".to_string(),
-            "forward 2".to_string(),
-        ]);
+        let data = "forward 5
+down 5
+forward 8
+up 3
+down 8
+forward 2";
 
-        assert_eq!(part1(&test_data), 150);
+        let r = io::BufReader::new(data.as_bytes());
+        let lines = common::read_input::<Command, &[u8]>(r);
+
+        assert_eq!(part1(&lines), 150);
     }
 
     #[test]
     fn test_part2() {
-        let test_data = process_input(vec![
-            "forward 5".to_string(),
-            "down 5".to_string(),
-            "forward 8".to_string(),
-            "up 3".to_string(),
-            "down 8".to_string(),
-            "forward 2".to_string(),
-        ]);
+        let data = "forward 5
+down 5
+forward 8
+up 3
+down 8
+forward 2";
 
-        assert_eq!(part2(&test_data), 900);
+        let r = io::BufReader::new(data.as_bytes());
+        let lines = common::read_input::<Command, &[u8]>(r);
+
+        assert_eq!(part2(&lines), 900);
     }
 }

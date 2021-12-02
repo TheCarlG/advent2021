@@ -1,5 +1,6 @@
 pub mod common {
-    use std::fs;
+    use std::io::prelude::*;
+    use std::io::BufReader;
     use std::process;
     use std::str::FromStr;
     use std::time::Instant;
@@ -12,12 +13,11 @@ pub mod common {
         println!("Execution time is: {:?}", duration);
     }
 
-    pub fn read_input<T: FromStr>(input: &str) -> Vec<T> {
-        fs::read_to_string(input)
-            .expect("Unable to read input file")
+    pub fn read_input<T: FromStr, R: Read>(input: BufReader<R>) -> Vec<T> {
+        input
             .lines()
             .map(|v| -> T {
-                match v.parse::<T>() {
+                match v.unwrap().parse::<T>() {
                     Ok(x) => x,
                     Err(_) => {
                         println!("Unable to parse value");
@@ -34,13 +34,24 @@ pub mod common {
 
         #[test]
         fn test_read_input() {
-            let v1 = read_input::<u32>("testdata/input_u32.txt");
-            assert_eq!(v1.len(), 10);
-            assert_eq!(v1[0], 199);
+            let data = "199
+200
+208
+210
+200
+207
+240
+269
+260
+263";
 
-            let v2 = read_input::<String>("testdata/input_u32.txt");
-            assert_eq!(v2.len(), 10);
-            assert_eq!(v2[0], "199");
+            let r = BufReader::new(data.as_bytes());
+            let lines = read_input::<u32, &[u8]>(r);
+            assert_eq!(lines[0], 199);
+
+            let r = BufReader::new(data.as_bytes());
+            let lines = read_input::<String, &[u8]>(r);
+            assert_eq!(lines[0], "199");
         }
     }
 }
