@@ -1,4 +1,4 @@
-name: Rust Example
+name: Build & Run
 
 on: [push]
 
@@ -10,7 +10,7 @@ jobs:
     - name: Setup Rust
       uses: icepuma/rust-action@master
 
-    - name: Check out code into the Go module directory
+    - name: Check out code
       uses: actions/checkout@v2
 
     - name: Run tests
@@ -31,4 +31,4 @@ jobs:
       uses: sarisia/actions-status-discord@v1
       with:
         nodetail: true
-        description: ${{ steps.Run.outputs.* }}
+        description: ${{join(steps.Run.outputs.*, '\n')}}
