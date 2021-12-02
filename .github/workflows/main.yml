@@ -43,4 +43,5 @@ jobs:
         nodetail: true
         description: |
           **[${{github.repository}}](https://github.com/${{github.repository}})**
-          ${{join(steps.run.outputs.*, '')}}
+          ${{join(steps.run.outputs.*, '
+          ')}}
