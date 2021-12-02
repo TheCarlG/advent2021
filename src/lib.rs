@@ -32,9 +32,7 @@ pub mod common {
     mod tests {
         use super::*;
 
-        #[test]
-        fn test_read_input() {
-            let data = "199
+        const DATA: &str = "199
 200
 208
 210
@@ -45,11 +43,13 @@ pub mod common {
 260
 263";
 
-            let r = BufReader::new(data.as_bytes());
+        #[test]
+        fn test_read_input() {
+            let r = BufReader::new(DATA.as_bytes());
             let lines = read_input::<u32, &[u8]>(r);
             assert_eq!(lines[0], 199);
 
-            let r = BufReader::new(data.as_bytes());
+            let r = BufReader::new(DATA.as_bytes());
             let lines = read_input::<String, &[u8]>(r);
             assert_eq!(lines[0], "199");
         }
