@@ -5,6 +5,7 @@ pub mod common {
     use std::str::FromStr;
     use std::time::Instant;
 
+    #[allow(dead_code)]
     pub fn time_func(f: fn()) {
         let start = Instant::now();
         f();
@@ -13,6 +14,7 @@ pub mod common {
         println!("Execution time is: {:?}ms", duration.as_secs_f64() * 1000.0);
     }
 
+    #[allow(dead_code)]
     pub fn read_input<T: FromStr, R: Read>(input: BufReader<R>) -> Vec<T> {
         input
             .lines()

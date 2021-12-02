@@ -17,11 +17,13 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Test
+      id: test
       uses: actions-rs/cargo@v1
       with:
         command: test
 
     - name: Build
+      id: build
       uses: actions-rs/cargo@v1
       with:
         command: build
@@ -34,7 +36,8 @@ jobs:
           echo "## $e" | cut -d/ -f3
           $e
           echo ""
-        done
+        done > result.txt
+        echo "::set-output name=result::$(cat result.txt)\n"
 
     - name: Send results to discord
       uses: sarisia/actions-status-discord@v1
