@@ -38,6 +38,6 @@ jobs:
       uses: sarisia/actions-status-discord@v1
       with:
         webhook: ${{ secrets.DISCORD_WEBHOOK }}
-        title: Execution of ${{env.GITHUB_REPO}}
+        title: Execution of ${{env.GITHUB_REPOSITORY}}
         nodetail: true
         description: ${{join(steps.run.outputs.*, '\n')}}
