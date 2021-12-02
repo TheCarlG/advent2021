@@ -47,7 +47,7 @@ jobs:
         title: ${{github.actor}}
         nodetail: true
         description: |
-          **[${{github.repository}}:${{github.ref_name}} New commit!](https://github.com/${{github.repository}}/commit/${{github.sha}})**
+          **[${{github.repository}}:${{github.ref_name}}](https://github.com/${{github.repository}}/commit/${{github.sha}})**
 
           ${{ github.event.head_commit.message }}
 
