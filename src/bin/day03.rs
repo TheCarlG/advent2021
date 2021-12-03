@@ -32,28 +32,33 @@ fn part1(l: &Vec<String>) -> u32 {
     gamma * epsilon
 }
 
-fn find(l: Vec<u32>, i: usize, f: fn(f32, f32) -> i32) -> Vec<u32> {
+fn find(l: Vec<u32>, i: usize, least_common: bool) -> Vec<u32> {
     let lim: f32 = *&l.len() as f32 / 2.0;
 
     let ones = *&l
         .clone()
         .into_iter()
-        .fold(I, |x, val: u32| x + ((val >> i) & 1));
+        .fold(I, |x, val: u32| x + ((val >> i) & 1)) as f32;
 
-    let bit = f(ones as f32, lim);
+    let common_bit = if (least_common && ones < lim) || (!least_common && ones >= lim) {
+        1
+    } else {
+        0
+    };
 
     let r: Vec<u32> = l
         .into_iter()
         .filter(|x: &u32| {
-            if bit == 0 {
-                return !(x >> i) & 1 == 1;
+            if common_bit == 0 {
+                !(x >> i) & 1 == 1
+            } else {
+                x >> i & 1 == 1
             }
-            x >> i & 1 == 1
         })
         .collect();
 
     if r.len() > 1 {
-        return find(r, i - 1, f);
+        return find(r, i - 1, least_common);
     }
 
     return r;
@@ -76,15 +81,16 @@ fn part2(l: &Vec<String>) -> u32 {
         .collect::<Vec<u32>>();
 
     let s: usize = l[0].len() as usize - 1;
-    let lo2 = find(list.clone(), s, |b, lim| if b >= lim { 1 } else { 0 });
-    let lco = find(list, s, |b, lim| if b >= lim { 0 } else { 1 });
+    let o2 = find(list.clone(), s, false)[0];
+    let co = find(list, s, true)[0];
 
-    return lco[0] * lo2[0];
+    return co * o2;
 }
 
 fn main() {
     common::time_func(|| {
         let lines = common::read_input::<String>("input/day03.data");
+
         println!("Part01: {}", part1(&lines));
         println!("Part02: {}", part2(&lines));
     });
@@ -97,7 +103,6 @@ mod tests {
     #[test]
     fn test_part1() {
         let lines = common::read_input::<String>("input/day03.test");
-
         assert_eq!(part1(&lines), 198);
     }
 

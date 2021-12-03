@@ -19,7 +19,7 @@ pub mod common {
         T: FromStr,
     {
         fs::read_to_string(filename)
-            .expect("unable to read file")
+            .expect(format!("unable to read {:}", filename).as_str())
             .lines()
             .map(|v| -> T {
                 match v.parse::<T>() {
@@ -35,7 +35,6 @@ pub mod common {
 
     #[cfg(test)]
     mod tests {
-
         use super::*;
 
         #[test]
