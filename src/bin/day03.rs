@@ -40,7 +40,7 @@ fn find(l: Vec<u32>, i: usize, least_common: bool) -> Vec<u32> {
         .into_iter()
         .fold(I, |x, val: u32| x + ((val >> i) & 1)) as f32;
 
-    let common_bit = if (least_common && ones < lim) || (!least_common && ones >= lim) {
+    let selected_bit = if (least_common && ones < lim) || (!least_common && ones >= lim) {
         1
     } else {
         0
@@ -49,7 +49,7 @@ fn find(l: Vec<u32>, i: usize, least_common: bool) -> Vec<u32> {
     let r: Vec<u32> = l
         .into_iter()
         .filter(|x: &u32| {
-            if common_bit == 0 {
+            if selected_bit == 0 {
                 !(x >> i) & 1 == 1
             } else {
                 x >> i & 1 == 1
