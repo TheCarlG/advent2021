@@ -1,6 +1,4 @@
 use advent2021::common;
-use std::fs::File;
-use std::io;
 use std::str::FromStr;
 use std::string::ParseError;
 
@@ -71,15 +69,11 @@ fn part2(l: &Vec<Command>) -> i32 {
 }
 
 fn main() {
-    common::time_func(|| match File::open("input/day02.txt") {
-        Ok(f) => {
-            let r = io::BufReader::new(f);
-            let lines = common::read_input::<Command, File>(r);
+    common::time_func(|| {
+        let lines = common::read_input::<Command>("input/day02.data");
 
-            println!("Part01: {}", part1(&lines));
-            println!("Part02: {}", part2(&lines));
-        }
-        Err(_) => unreachable!(),
+        println!("Part01: {}", part1(&lines));
+        println!("Part02: {}", part2(&lines));
     });
 }
 
@@ -87,24 +81,15 @@ fn main() {
 mod tests {
     use super::*;
 
-    const DATA: &str = "forward 5
-down 5
-forward 8
-up 3
-down 8
-forward 2";
-
     #[test]
     fn test_part1() {
-        let r = io::BufReader::new(DATA.as_bytes());
-        let lines = common::read_input::<Command, &[u8]>(r);
+        let lines = common::read_input::<Command>("input/day02.test");
 
         assert_eq!(part1(&lines), 150);
     }
     #[test]
     fn test_part2() {
-        let r = io::BufReader::new(DATA.as_bytes());
-        let lines = common::read_input::<Command, &[u8]>(r);
+        let lines = common::read_input::<Command>("input/day02.test");
 
         assert_eq!(part2(&lines), 900);
     }
