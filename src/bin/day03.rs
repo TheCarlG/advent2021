@@ -3,10 +3,10 @@ use advent2021::common;
 const I: u32 = 0;
 
 fn part1(l: &Vec<String>) -> u32 {
-    let lim: u32 = (l.len() / 2).try_into().unwrap();
+    let mid: u32 = (l.len() / 2).try_into().unwrap();
     let s: usize = l[0].len() as usize;
 
-    let (mut gamma, mut epsilon) = l
+    let gamma = l
         .into_iter()
         .fold(vec![I; s], |mut acc, val: &String| {
             for (i, c) in val.chars().enumerate() {
@@ -17,23 +17,21 @@ fn part1(l: &Vec<String>) -> u32 {
             acc
         })
         .into_iter()
-        .fold((I, I), |(mut gamma, mut epsilon), x| {
-            if x > lim {
+        .fold(I, |mut gamma, v| {
+            if v > mid {
                 gamma += 1;
-            } else {
-                epsilon += 1;
             }
-            (gamma << 1, epsilon << 1)
-        });
+            gamma << 1
+        })
+        >> 1;
 
-    epsilon >>= 1;
-    gamma >>= 1;
+    let mask = (1 << s) - 1;
 
-    gamma * epsilon
+    gamma * (gamma ^ mask)
 }
 
 fn find(l: Vec<u32>, i: usize, least_common: bool) -> Vec<u32> {
-    let lim: f32 = *&l.len() as f32 / 2.0;
+    let mid: f32 = *&l.len() as f32 / 2.0;
 
     let ones = *&l
         .clone()
@@ -43,7 +41,7 @@ fn find(l: Vec<u32>, i: usize, least_common: bool) -> Vec<u32> {
     let r: Vec<u32> = l
         .into_iter()
         .filter(|x: &u32| {
-            if (least_common && ones < lim) || (!least_common && ones >= lim) {
+            if (least_common && ones < mid) || (!least_common && ones >= mid) {
                 x >> i & 1 == 1
             } else {
                 !(x >> i) & 1 == 1
