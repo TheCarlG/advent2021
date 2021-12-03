@@ -35,14 +35,15 @@ fn part1(l: &Vec<String>) -> u32 {
     gamma * (gamma ^ mask) as u32
 }
 
-fn find(l: Vec<u32>, i: usize, cmp: fn(f32, f32) -> i32) -> Vec<u32> {
+fn find(l: Vec<u32>, i: usize, f: fn(f32, f32) -> i32) -> Vec<u32> {
     let lim: f32 = *&l.len() as f32 / 2.0;
 
-    let b = *&l.clone().into_iter().fold(I, |mut x, val: u32| {
-        x += (val >> i) & 1;
-        x
-    });
-    let bit = cmp(b as f32, lim);
+    let b = *&l
+        .clone()
+        .into_iter()
+        .fold(I, |x, val: u32| x + ((val >> i) & 1));
+
+    let bit = f(b as f32, lim);
 
     let r: Vec<u32> = l
         .into_iter()
@@ -55,7 +56,7 @@ fn find(l: Vec<u32>, i: usize, cmp: fn(f32, f32) -> i32) -> Vec<u32> {
         .collect();
 
     if r.len() > 1 {
-        return find(r, i - 1, cmp);
+        return find(r, i - 1, f);
     }
 
     return r;
@@ -77,9 +78,9 @@ fn part2(l: &Vec<String>) -> u32 {
         })
         .collect::<Vec<u32>>();
 
-    let s: usize = l[0].len() as usize;
-    let lo2 = find(list.clone(), s - 1, |b, lim| if b >= lim { 1 } else { 0 });
-    let lco = find(list, s - 1, |b, lim| if b >= lim { 0 } else { 1 });
+    let s: usize = l[0].len() as usize - 1;
+    let lo2 = find(list.clone(), s, |b, lim| if b >= lim { 1 } else { 0 });
+    let lco = find(list, s, |b, lim| if b >= lim { 0 } else { 1 });
 
     return lco[0] * lo2[0];
 }
