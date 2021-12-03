@@ -19,7 +19,7 @@ pub mod common {
         T: FromStr,
     {
         fs::read_to_string(filename)
-            .expect(format!("unable to read {:}", filename).as_str())
+            .unwrap_or_else(|_| panic!("{}", format!("unable to read {:}", filename).as_str()))
             .lines()
             .map(|v| -> T {
                 match v.parse::<T>() {

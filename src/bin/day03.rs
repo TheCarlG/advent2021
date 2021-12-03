@@ -2,12 +2,12 @@ use advent2021::common;
 
 const I: u32 = 0;
 
-fn part1(l: &Vec<String>) -> u32 {
+fn part1(l: &[String]) -> u32 {
     let mid: u32 = (l.len() / 2).try_into().unwrap();
     let s: usize = l[0].len() as usize;
 
     let gamma = l
-        .into_iter()
+        .iter()
         .fold(vec![I; s], |mut acc, val: &String| {
             for (i, c) in val.chars().enumerate() {
                 if c == '1' {
@@ -16,9 +16,9 @@ fn part1(l: &Vec<String>) -> u32 {
             }
             acc
         })
-        .into_iter()
+        .iter()
         .fold(I, |mut gamma, v| {
-            if v > mid {
+            if v > &mid {
                 gamma += 1;
             }
             gamma << 1
@@ -31,9 +31,9 @@ fn part1(l: &Vec<String>) -> u32 {
 }
 
 fn find(l: Vec<u32>, i: usize, least_common: bool) -> Vec<u32> {
-    let mid: f32 = *&l.len() as f32 / 2.0;
+    let mid: f32 = l.len() as f32 / 2.0;
 
-    let ones = *&l
+    let ones = l
         .clone()
         .into_iter()
         .fold(I, |x, val: u32| x + ((val >> i) & 1)) as f32;
@@ -50,15 +50,15 @@ fn find(l: Vec<u32>, i: usize, least_common: bool) -> Vec<u32> {
         .collect();
 
     if r.len() > 1 {
-        return find(r, i - 1, least_common);
+        find(r, i - 1, least_common)
+    } else {
+        r
     }
-
-    return r;
 }
 
-fn part2(l: &Vec<String>) -> u32 {
+fn part2(l: &[String]) -> u32 {
     let list = l
-        .into_iter()
+        .iter()
         .map(|x| {
             let mut val: u32 = 0;
             for c in x.chars() {
@@ -76,7 +76,7 @@ fn part2(l: &Vec<String>) -> u32 {
     let o2 = find(list.clone(), s, false)[0];
     let co = find(list, s, true)[0];
 
-    return co * o2;
+    co * o2
 }
 
 fn main() {

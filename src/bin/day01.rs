@@ -1,12 +1,12 @@
 use advent2021::common;
 
-fn part1(l: &Vec<u32>) -> usize {
+fn part1(l: &[u32]) -> usize {
     l.windows(2).filter(|x| x[0] < x[1]).count()
 }
 
-fn part2(l: &Vec<u32>) -> usize {
+fn part2(l: &[u32]) -> usize {
     l.windows(3)
-        .fold((u32::MAX, 0 as usize), |(prev, i), x| {
+        .fold((u32::MAX, 0_usize), |(prev, i), x| {
             let sum = x[0] + x[1] + x[2];
             (sum, i + if prev < sum { 1 } else { 0 })
         })

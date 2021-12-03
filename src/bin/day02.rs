@@ -39,8 +39,8 @@ impl FromStr for Command {
     }
 }
 
-fn part1(l: &Vec<Command>) -> i32 {
-    let x = l.into_iter().fold((I, I), |(mut x, mut y), v| {
+fn part1(l: &[Command]) -> i32 {
+    let x = l.iter().fold((I, I), |(mut x, mut y), v| {
         match v.direction {
             Direction::Forward => x += v.steps,
             Direction::Up => y -= v.steps,
@@ -52,8 +52,8 @@ fn part1(l: &Vec<Command>) -> i32 {
     x.0 * x.1
 }
 
-fn part2(l: &Vec<Command>) -> i32 {
-    let x = l.into_iter().fold((I, I, I), |(mut x, mut y, mut aim), v| {
+fn part2(l: &[Command]) -> i32 {
+    let x = l.iter().fold((I, I, I), |(mut x, mut y, mut aim), v| {
         match v.direction {
             Direction::Forward => {
                 x += v.steps;
