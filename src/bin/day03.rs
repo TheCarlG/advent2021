@@ -35,8 +35,53 @@ fn part1(l: &Vec<String>) -> u32 {
     gamma * (gamma ^ mask) as u32
 }
 
-fn part2(_l: &Vec<String>) -> u32 {
-    return 0;
+fn find(l: Vec<u32>, i: usize, cmp: fn(f32, f32) -> i32) -> Vec<u32> {
+    let lim: f32 = *&l.len() as f32 / 2.0;
+
+    let b = *&l.clone().into_iter().fold(I, |mut x, val: u32| {
+        x += (val >> i) & 1;
+        x
+    });
+    let bit = cmp(b as f32, lim);
+
+    let r: Vec<u32> = l
+        .into_iter()
+        .filter(|x: &u32| {
+            if bit == 0 {
+                return !(x >> i) & 1 == 1;
+            }
+            return x >> i & 1 == 1;
+        })
+        .collect();
+
+    if r.len() > 1 {
+        return find(r, i - 1, cmp);
+    }
+
+    return r;
+}
+
+fn part2(l: &Vec<String>) -> u32 {
+    let list = l
+        .into_iter()
+        .map(|x| {
+            let mut val: u32 = 0;
+            for c in x.chars() {
+                if c == '1' {
+                    val += 1
+                }
+                val <<= 1;
+            }
+            val >>= 1;
+            val
+        })
+        .collect::<Vec<u32>>();
+
+    let s: usize = l[0].len() as usize;
+    let lo2 = find(list.clone(), s - 1, |b, lim| if b >= lim { 1 } else { 0 });
+    let lco = find(list, s - 1, |b, lim| if b >= lim { 0 } else { 1 });
+
+    return lco[0] * lo2[0];
 }
 
 fn main() {
@@ -76,11 +121,11 @@ mod tests {
         assert_eq!(part1(&lines), 198);
     }
 
-    // #[test]
-    // fn test_part2() {
-    //     let r = io::BufReader::new(DATA.as_bytes());
-    //     let lines = common::read_input::<u32, &[u8]>(r);
+    #[test]
+    fn test_part2() {
+        let r = io::BufReader::new(DATA.as_bytes());
+        let lines = common::read_input::<String, &[u8]>(r);
 
-    //     assert_eq!(part2(&lines), 5);
-    // }
+        assert_eq!(part2(&lines), 230);
+    }
 }
