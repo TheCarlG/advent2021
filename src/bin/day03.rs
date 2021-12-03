@@ -8,13 +8,13 @@ fn part1(l: &Vec<String>) -> u32 {
 
     let (mut gamma, mut epsilon) = l
         .into_iter()
-        .fold(vec![I; s], |mut arr, val: &String| {
+        .fold(vec![I; s], |mut acc, val: &String| {
             for (i, c) in val.chars().enumerate() {
                 if c == '1' {
-                    arr[i] += 1;
+                    acc[i] += 1;
                 }
             }
-            arr
+            acc
         })
         .into_iter()
         .fold((I, I), |(mut gamma, mut epsilon), x| {
@@ -40,19 +40,13 @@ fn find(l: Vec<u32>, i: usize, least_common: bool) -> Vec<u32> {
         .into_iter()
         .fold(I, |x, val: u32| x + ((val >> i) & 1)) as f32;
 
-    let selected_bit = if (least_common && ones < lim) || (!least_common && ones >= lim) {
-        1
-    } else {
-        0
-    };
-
     let r: Vec<u32> = l
         .into_iter()
         .filter(|x: &u32| {
-            if selected_bit == 0 {
-                !(x >> i) & 1 == 1
-            } else {
+            if (least_common && ones < lim) || (!least_common && ones >= lim) {
                 x >> i & 1 == 1
+            } else {
+                !(x >> i) & 1 == 1
             }
         })
         .collect();
