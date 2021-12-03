@@ -14,8 +14,6 @@ struct Command {
     steps: i32,
 }
 
-const I: i32 = 0;
-
 impl FromStr for Command {
     type Err = ParseError;
 
@@ -40,7 +38,7 @@ impl FromStr for Command {
 }
 
 fn part1(l: &[Command]) -> i32 {
-    let x = l.iter().fold((I, I), |(mut x, mut y), v| {
+    let x = l.iter().fold((0_i32, 0_i32), |(mut x, mut y), v| {
         match v.direction {
             Direction::Forward => x += v.steps,
             Direction::Up => y -= v.steps,
@@ -53,17 +51,19 @@ fn part1(l: &[Command]) -> i32 {
 }
 
 fn part2(l: &[Command]) -> i32 {
-    let x = l.iter().fold((I, I, I), |(mut x, mut y, mut aim), v| {
-        match v.direction {
-            Direction::Forward => {
-                x += v.steps;
-                y += v.steps * aim;
+    let x = l
+        .iter()
+        .fold((0_i32, 0_i32, 0_i32), |(mut x, mut y, mut aim), v| {
+            match v.direction {
+                Direction::Forward => {
+                    x += v.steps;
+                    y += v.steps * aim;
+                }
+                Direction::Up => aim -= v.steps,
+                Direction::Down => aim += v.steps,
             }
-            Direction::Up => aim -= v.steps,
-            Direction::Down => aim += v.steps,
-        }
-        (x, y, aim)
-    });
+            (x, y, aim)
+        });
 
     x.0 * x.1
 }

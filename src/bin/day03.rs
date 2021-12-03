@@ -1,14 +1,12 @@
 use advent2021::common;
 
-const I: u32 = 0;
-
 fn part1(l: &[String]) -> u32 {
     let mid: u32 = (l.len() / 2).try_into().unwrap();
     let s: usize = l[0].len() as usize;
 
     let gamma = l
         .iter()
-        .fold(vec![I; s], |mut acc, val: &String| {
+        .fold(vec![0_u32; s], |mut acc, val: &String| {
             for (i, c) in val.chars().enumerate() {
                 if c == '1' {
                     acc[i] += 1;
@@ -17,7 +15,7 @@ fn part1(l: &[String]) -> u32 {
             acc
         })
         .iter()
-        .fold(I, |mut gamma, v| {
+        .fold(0_u32, |mut gamma, v| {
             if v > &mid {
                 gamma += 1;
             }
@@ -36,7 +34,7 @@ fn find(l: Vec<u32>, i: usize, least_common: bool) -> Vec<u32> {
     let ones = l
         .clone()
         .into_iter()
-        .fold(I, |x, val: u32| x + ((val >> i) & 1)) as f32;
+        .fold(0_u32, |x, val: u32| x + ((val >> i) & 1)) as f32;
 
     let r: Vec<u32> = l
         .into_iter()
