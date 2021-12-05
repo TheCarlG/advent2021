@@ -6,7 +6,7 @@ const BOARD_SIZE: usize = SIZE.pow(2);
 const H_MATCH: u32 = 0x1F;
 const V_MATCH: u32 = 0x108421;
 
-fn parse(mut lines: Vec<String>) -> (Vec<i32>, Vec<([i32; 25], u32)>) {
+fn parse(mut lines: Vec<String>) -> (Vec<i32>, Vec<([i32; BOARD_SIZE], u32)>) {
     let drawn = lines
         .remove(0)
         .split(',')
@@ -38,7 +38,7 @@ fn parse(mut lines: Vec<String>) -> (Vec<i32>, Vec<([i32; 25], u32)>) {
     (drawn, boards)
 }
 
-fn play(drawn: &[i32], mut boards: Vec<([i32; 25], u32)>) -> (i32, i32) {
+fn play(drawn: &[i32], mut boards: Vec<([i32; BOARD_SIZE], u32)>) -> (i32, i32) {
     let winners = drawn.iter().fold(Vec::new(), |mut winners, num| {
         boards = boards
             .iter()
@@ -58,7 +58,7 @@ fn play(drawn: &[i32], mut boards: Vec<([i32; 25], u32)>) -> (i32, i32) {
                 }
                 true
             })
-            .collect::<Vec<([i32; 25], u32)>>();
+            .collect::<Vec<([i32; BOARD_SIZE], u32)>>();
         winners
     });
 
