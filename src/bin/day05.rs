@@ -27,12 +27,6 @@ impl FromStr for Point {
     }
 }
 
-impl Point {
-    fn dim1(&self) -> usize {
-        (SIZE * self.y) + self.x
-    }
-}
-
 #[derive(Debug)]
 struct Line {
     start: Point,
@@ -66,47 +60,40 @@ fn _display_grid(g: &[i32]) {
 }
 
 fn find(l: &[Line]) -> (usize, usize) {
-    let mut v = Vec::new();
-    v.resize(GRID_SIZE as usize, 0);
+    let v = vec![0; GRID_SIZE];
 
     let (g, g2) = l.iter().fold((v.clone(), v), |(mut g, mut g2), line| {
-        if line.start.x != line.end.x && line.start.y != line.end.y {
-            let mut x: isize = 1;
-            let diff = if line.start.x > line.end.x {
-                x = -1;
-                line.start.x - line.end.x
-            } else {
-                line.end.x - line.start.x
-            };
-            let mut y: isize = 1;
-            if line.start.y > line.end.y {
-                y = -1;
-            }
-            for i in 0..=diff as isize {
-                let pos = SIZE as isize * (line.start.y as isize + (y * i))
-                    + (line.start.x as isize + (x * i));
-                g2[pos as usize] += 1;
-            }
-        } else {
-            const SSIZE: isize = SIZE as isize;
-            let mut start = line.start.dim1() as isize;
-            let mut end = line.end.dim1() as isize;
-            let diff: isize = end - start;
-            let step: isize = if diff.abs() >= SSIZE {
-                SSIZE as isize
-            } else {
-                1
-            };
-            if diff < 0 {
-                start = end;
-                end = line.start.dim1() as isize;
-            }
+        let x_diff = (line.start.x as isize - line.end.x as isize) as i32;
+        let y_diff = (line.start.y as isize - line.end.y as isize) as i32;
 
-            for i in (start..=end).step_by(step as usize) {
-                g[i as usize] += 1;
-                g2[i as usize] += 1;
+        let diag = x_diff.abs() > 0 && y_diff.abs() > 0;
+
+        let diff = x_diff.abs().max(y_diff.abs());
+
+        let dx = match x_diff {
+            i if i < 0 => 1,
+            i if i > 0 => -1,
+            _ => 0,
+        };
+        let dy = match y_diff {
+            i if i < 0 => 1,
+            i if i > 0 => -1,
+            _ => 0,
+        };
+
+        let sy = line.start.y as isize;
+        let sx = line.start.x as isize;
+
+        for i in 0..=diff as isize {
+            let x = (sx + (dx * i)) as usize;
+            let y = (sy + (dy * i)) as usize;
+
+            if !diag {
+                g[y * SIZE + x] += 1;
             }
+            g2[y * SIZE + x] += 1;
         }
+
         (g, g2)
     });
     //_display_grid(&g);
