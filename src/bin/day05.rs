@@ -1,8 +1,8 @@
 use advent2021::common;
 use std::str::FromStr;
-use std::string::ParseError;
 
 const SIZE: usize = 1000;
+
 const GRID_SIZE: usize = SIZE.pow(2);
 
 #[derive(Debug)]
@@ -12,7 +12,7 @@ struct Point {
 }
 
 impl FromStr for Point {
-    type Err = ParseError;
+    type Err = String;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s.split_once(',') {
@@ -27,6 +27,12 @@ impl FromStr for Point {
     }
 }
 
+impl Point {
+    fn dim1(&self) -> usize {
+        (SIZE * self.y) + self.x
+    }
+}
+
 #[derive(Debug)]
 struct Line {
     start: Point,
@@ -34,7 +40,7 @@ struct Line {
 }
 
 impl FromStr for Line {
-    type Err = ParseError;
+    type Err = String;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s.replace(" -> ", "-").split_once('-') {
@@ -49,7 +55,7 @@ impl FromStr for Line {
     }
 }
 
-fn _display_grid(g: Vec<i32>) {
+fn _display_grid(g: &[i32]) {
     for (i, n) in g.iter().enumerate() {
         print!("{} ", n);
         if (i + 1) % SIZE == 0 {
@@ -82,29 +88,29 @@ fn find(l: &[Line]) -> (usize, usize) {
                 g2[pos as usize] += 1;
             }
         } else {
-            let x_range = if line.start.x > line.end.x {
-                line.end.x..=line.start.x
+            const SSIZE: isize = SIZE as isize;
+            let mut start = line.start.dim1() as isize;
+            let mut end = line.end.dim1() as isize;
+            let diff: isize = end - start;
+            let step: isize = if diff.abs() >= SSIZE {
+                SSIZE as isize
             } else {
-                line.start.x..=line.end.x
+                1
             };
-            let y_range = if line.start.y > line.end.y {
-                line.end.y..=line.start.y
-            } else {
-                line.start.y..=line.end.y
-            };
+            if diff < 0 {
+                start = end;
+                end = line.start.dim1() as isize;
+            }
 
-            for x in x_range {
-                for y in y_range.clone() {
-                    let pos = SIZE * y + x;
-                    g[pos as usize] += 1;
-                    g2[pos as usize] += 1;
-                }
+            for i in (start..=end).step_by(step as usize) {
+                g[i as usize] += 1;
+                g2[i as usize] += 1;
             }
         }
         (g, g2)
     });
-    // _display_grid(g);
-    // _display_grid(g2);
+    //_display_grid(&g);
+    //_display_grid(&g2);
 
     let p1 = g.iter().fold(0, |mut p, cell| {
         if *cell > 1 {
