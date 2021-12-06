@@ -1,6 +1,6 @@
 use advent2021::common;
 
-fn simulate(input: &[u128], days: i32) -> [u128; 9] {
+fn simulate(input: &[u128], days: i32) -> u128 {
     let mut data = [0_u128; 9];
     for i in input {
         data[*i as usize] += 1;
@@ -15,7 +15,7 @@ fn simulate(input: &[u128], days: i32) -> [u128; 9] {
         data[8] = new;
     }
 
-    data
+    data.iter().sum()
 }
 
 fn main() {
@@ -27,13 +27,8 @@ fn main() {
             .map(|v| v.parse::<u128>().unwrap())
             .collect();
 
-        let data = simulate(&input, 80);
-        let cnt: u128 = data.iter().sum();
-        println!("Part01: {}", cnt);
-
-        let data = simulate(&input, 256);
-        let cnt: u128 = data.iter().sum();
-        println!("Part02: {}", cnt);
+        println!("Part01: {}", simulate(&input, 80));
+        println!("Part02: {}", simulate(&input, 256));
     });
 }
 
@@ -50,9 +45,7 @@ mod tests {
             .map(|v| v.parse::<u128>().unwrap())
             .collect();
 
-        let data = simulate(&input, 18);
-        let cnt: u128 = data.iter().sum();
-        assert_eq!(cnt, 26);
+        assert_eq!(simulate(&input, 18), 26);
     }
 
     #[test]
@@ -64,9 +57,7 @@ mod tests {
             .map(|v| v.parse::<u128>().unwrap())
             .collect();
 
-        let data = simulate(&input, 80);
-        let cnt: u128 = data.iter().sum();
-        assert_eq!(cnt, 5934);
+        assert_eq!(simulate(&input, 80), 5934);
     }
 
     #[test]
@@ -78,8 +69,6 @@ mod tests {
             .map(|v| v.parse::<u128>().unwrap())
             .collect();
 
-        let data = simulate(&input, 256);
-        let cnt: u128 = data.iter().sum();
-        assert_eq!(cnt, 26984457539);
+        assert_eq!(simulate(&input, 256), 26984457539);
     }
 }
