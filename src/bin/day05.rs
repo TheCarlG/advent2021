@@ -60,9 +60,10 @@ fn _display_grid(g: &[i32]) {
 }
 
 fn find(l: &[Line]) -> (usize, usize) {
-    let v = vec![0; GRID_SIZE];
+    let g = vec![0; GRID_SIZE];
+    let g2 = vec![0; GRID_SIZE];
 
-    let (g, g2) = l.iter().fold((v.clone(), v), |(mut g, mut g2), line| {
+    let (g, g2) = l.iter().fold((g, g2), |(mut g, mut g2), line| {
         let x_diff = (line.start.x as isize - line.end.x as isize) as i32;
         let y_diff = (line.start.y as isize - line.end.y as isize) as i32;
 
