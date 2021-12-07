@@ -27,12 +27,10 @@ fn part2(mut input: Vec<i32>) -> i32 {
     let n = input.len();
 
     let low = input[0];
-    let high = input[n - 1];
-
     let mut s = MAX;
     let mut curr = 0;
 
-    for i in (low..=high).rev() {
+    (low..=input[n - 1]).for_each(|i| {
         (0..n).for_each(|j| {
             let v = (input[j] - i).abs();
             curr += v * (1 + v) / 2;
@@ -43,7 +41,7 @@ fn part2(mut input: Vec<i32>) -> i32 {
         }
 
         curr = 0;
-    }
+    });
 
     s
 }
