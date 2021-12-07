@@ -1,6 +1,8 @@
+use std::i32::MAX;
+
 use advent2021::common;
 
-fn calc(mut input: Vec<i32>) -> i32 {
+fn part1(mut input: Vec<i32>) -> i32 {
     let n = input.len();
 
     input.sort_unstable();
@@ -19,6 +21,33 @@ fn calc(mut input: Vec<i32>) -> i32 {
     s
 }
 
+fn part2(mut input: Vec<i32>) -> i32 {
+    input.sort_unstable();
+
+    let n = input.len();
+
+    let low = input[0];
+    let high = input[n - 1];
+
+    let mut s = MAX;
+    let mut curr = 0;
+
+    for i in (low..=high).rev() {
+        (0..n).for_each(|j| {
+            let v = (input[j] - i).abs();
+            curr += v * (1 + v) / 2;
+        });
+
+        if curr < s {
+            s = curr;
+        }
+
+        curr = 0;
+    }
+
+    s
+}
+
 fn main() {
     common::time_func(|| {
         let input: Vec<i32> = common::read_input::<String>("input/day07.data")
@@ -28,8 +57,8 @@ fn main() {
             .map(|v| v.parse::<i32>().unwrap())
             .collect();
 
-        println!("Part01: {}", calc(input.clone()));
-        //println!("Part02: {}", calc(&input));
+        println!("Part01: {}", part1(input.clone()));
+        println!("Part02: {}", part2(input));
     });
 }
 
@@ -46,19 +75,18 @@ mod tests {
             .map(|v| v.parse::<i32>().unwrap())
             .collect();
 
-        assert_eq!(calc(input), 37);
+        assert_eq!(part1(input), 37);
     }
 
     #[test]
-    #[ignore]
     fn test_part2() {
-        let input: Vec<i32> = common::read_input::<String>("input/day07.data")
+        let input: Vec<i32> = common::read_input::<String>("input/day07.test")
             .first()
             .unwrap()
             .split(',')
             .map(|v| v.parse::<i32>().unwrap())
             .collect();
 
-        assert_eq!(calc(input), 37);
+        assert_eq!(part2(input), 168);
     }
 }
