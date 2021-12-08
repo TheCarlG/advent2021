@@ -14,19 +14,16 @@ fn part1(input: Vec<(Vec<&str>, Vec<&str>)>) -> i32 {
     m[&2] + m[&3] + m[&4] + m[&7]
 }
 
-fn remove(s1: &String, s2: &String) -> String {
+fn remove(s1: &str, s2: &str) -> String {
     s1.chars()
         .filter(|x| !s2.contains(&x.to_string()))
         .collect()
 }
 
-fn merge(s1: &String, s2: &String) -> String {
-    let v1: Vec<char> = s1.chars().collect();
-    let v2: Vec<char> = s2.chars().collect();
+fn merge(s1: &str, s2: &str) -> String {
+    let mut v: Vec<char> = s1.chars().collect();
+    v.extend(s2.chars().collect::<Vec<char>>());
 
-    let mut v = v1.clone();
-
-    v.extend(v2);
     v.sort_unstable();
     v.dedup();
 
