@@ -10,30 +10,31 @@ type Point = (usize, usize);
 
 struct Grid {
     grid: [[i32; SIZE]; SIZE],
-    max_usage: Point,
+    view_limit: Point,
 }
 
 impl Grid {
     fn lowpoints(&self) -> Vec<(i32, Point)> {
         let mut res = Vec::new();
-        let (width, height) = self.max_usage;
+        let (width, height) = self.view_limit;
+
+        let dirs: [(isize, isize); 4] = [(0, 1), (0, -1), (1, 0), (-1, 0)];
 
         for y in 0..height {
-            for x in 0..width {
+            'outer: for x in 0..width {
                 let val = self.grid[y][x];
+                for p in dirs {
+                    let x1 = x as isize + p.0;
+                    let y1 = y as isize + p.1;
 
-                if (y > 0) && self.grid[y - 1][x] <= val {
-                    continue;
+                    if (x1 >= 0 && x1 < width as isize)
+                        && (y1 >= 0 && y1 < height as isize)
+                        && self.grid[y1 as usize][x1 as usize] <= val
+                    {
+                        continue 'outer;
+                    }
                 }
-                if (y + 1 < height) && self.grid[y + 1][x] <= val {
-                    continue;
-                }
-                if (x > 0) && self.grid[y][x - 1] <= val {
-                    continue;
-                }
-                if (x + 1 < width) && self.grid[y][x + 1] <= val {
-                    continue;
-                }
+
                 res.push((val, (x, y)));
             }
         }
@@ -42,27 +43,25 @@ impl Grid {
     }
 
     fn find_path(&self, start: Point, visited: &mut HashSet<Point>) -> i32 {
-        let (width, height) = self.max_usage;
+        let (width, height) = self.view_limit;
+        visited.insert(start);
 
         let mut res = 0;
         let (x, y) = start;
         let dirs: [(isize, isize); 4] = [(0, 1), (0, -1), (1, 0), (-1, 0)];
 
-        (0..dirs.len()).for_each(|i| {
-            let x1 = x as isize + dirs[i].0;
-            let y1 = y as isize + dirs[i].1;
+        for p in dirs {
+            let x1 = x as isize + p.0;
+            let y1 = y as isize + p.1;
 
-            if x1 >= 0
-                && x1 < width as isize
-                && y1 >= 0
-                && y1 < height as isize
+            if (x1 >= 0 && x1 < width as isize)
+                && (y1 >= 0 && y1 < height as isize)
                 && !visited.contains(&(x1 as usize, y1 as usize))
                 && self.grid[y1 as usize][x1 as usize] < 9
             {
-                visited.insert((x1 as usize, y1 as usize));
                 res += self.find_path((x1 as usize, y1 as usize), visited);
             }
-        });
+        }
 
         res + 1
     }
@@ -72,7 +71,6 @@ impl Grid {
 
         let mut visited: HashSet<Point> = HashSet::new();
         lowpoints.iter().for_each(|p| {
-            visited.insert(p.1);
             let val = self.find_path(p.1, &mut visited);
             if val > 0 {
                 res.push(val);
@@ -89,7 +87,7 @@ impl Default for Grid {
     fn default() -> Self {
         Grid {
             grid: [[0; SIZE]; SIZE],
-            max_usage: (SIZE, SIZE),
+            view_limit: (SIZE, SIZE),
         }
     }
 }
@@ -141,7 +139,7 @@ mod tests {
     #[test]
     fn test_part1() {
         let mut grid = read_input(DAY, true);
-        grid.max_usage = (10, 5);
+        grid.view_limit = (10, 5);
 
         let low = grid.lowpoints();
 
@@ -157,7 +155,7 @@ mod tests {
     #[test]
     fn test_part2() {
         let mut grid = read_input(DAY, true);
-        grid.max_usage = (10, 5);
+        grid.view_limit = (10, 5);
 
         let low = grid.lowpoints();
         let basins = grid.basins(&low);
