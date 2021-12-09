@@ -1,5 +1,7 @@
 use std::collections::HashMap;
 
+const DAY: &str = "day08";
+
 use advent2021::common;
 
 fn part1(input: Vec<(Vec<&str>, Vec<&str>)>) -> i32 {
@@ -7,10 +9,10 @@ fn part1(input: Vec<(Vec<&str>, Vec<&str>)>) -> i32 {
 
     input.iter().for_each(|v| {
         v.1.iter().for_each(|k| {
-            let k = (**k).len();
-            m.entry(k).and_modify(|val| *val += 1).or_insert(1);
+            m.entry(k.len()).and_modify(|val| *val += 1).or_insert(1);
         })
     });
+
     m[&2] + m[&3] + m[&4] + m[&7]
 }
 
@@ -153,7 +155,7 @@ fn part2(input: Vec<(Vec<&str>, Vec<&str>)>) -> i32 {
 
 fn main() {
     common::time_func(|| {
-        let input = common::read_input::<String>("input/day08.data");
+        let input = common::read_input::<String>(DAY, false);
         let input: Vec<(Vec<&str>, Vec<&str>)> = input
             .iter()
             .map(|r| {
@@ -194,7 +196,7 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        let input = common::read_input::<String>("input/day08.test");
+        let input = common::read_input::<String>(DAY, true);
         let input: Vec<(Vec<&str>, Vec<&str>)> = input
             .iter()
             .map(|r| {
@@ -211,7 +213,7 @@ mod tests {
 
     #[test]
     fn test_part2() {
-        let input = common::read_input::<String>("input/day08.test");
+        let input = common::read_input::<String>(DAY, true);
         let input: Vec<(Vec<&str>, Vec<&str>)> = input
             .iter()
             .map(|r| {

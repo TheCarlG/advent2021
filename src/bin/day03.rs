@@ -1,5 +1,7 @@
 use advent2021::common;
 
+const DAY: &str = "day03";
+
 fn part1(l: &[String]) -> u32 {
     let mid: u32 = (l.len() / 2).try_into().unwrap();
     let s: usize = l[0].len() as usize;
@@ -79,7 +81,7 @@ fn part2(l: &[String]) -> u32 {
 
 fn main() {
     common::time_func(|| {
-        let lines = common::read_input::<String>("input/day03.data");
+        let lines = common::read_input::<String>(DAY, false);
 
         println!("Part01: {}", part1(&lines));
         println!("Part02: {}", part2(&lines));
@@ -92,13 +94,13 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        let lines = common::read_input::<String>("input/day03.test");
+        let lines = common::read_input::<String>(DAY, true);
         assert_eq!(part1(&lines), 198);
     }
 
     #[test]
     fn test_part2() {
-        let lines = common::read_input::<String>("input/day03.test");
+        let lines = common::read_input::<String>(DAY, true);
 
         assert_eq!(part2(&lines), 230);
     }

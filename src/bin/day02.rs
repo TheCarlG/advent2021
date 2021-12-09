@@ -2,6 +2,8 @@ use advent2021::common;
 use std::str::FromStr;
 use std::string::ParseError;
 
+const DAY: &str = "day02";
+
 #[derive(Debug)]
 enum Direction {
     Up,
@@ -70,7 +72,7 @@ fn part2(l: &[Command]) -> i32 {
 
 fn main() {
     common::time_func(|| {
-        let lines = common::read_input::<Command>("input/day02.data");
+        let lines = common::read_input::<Command>(DAY, false);
 
         println!("Part01: {}", part1(&lines));
         println!("Part02: {}", part2(&lines));
@@ -83,13 +85,13 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        let lines = common::read_input::<Command>("input/day02.test");
+        let lines = common::read_input::<Command>(DAY, true);
 
         assert_eq!(part1(&lines), 150);
     }
     #[test]
     fn test_part2() {
-        let lines = common::read_input::<Command>("input/day02.test");
+        let lines = common::read_input::<Command>(DAY, true);
 
         assert_eq!(part2(&lines), 900);
     }

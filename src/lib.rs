@@ -14,11 +14,13 @@ pub mod common {
     }
 
     #[allow(dead_code)]
-    pub fn read_input<T>(filename: &str) -> Vec<T>
+    pub fn read_input<T>(day: &str, test: bool) -> Vec<T>
     where
         T: FromStr,
     {
-        fs::read_to_string(filename)
+        let set = if test { "test" } else { "data" };
+        let filename = format!("input/{}.{}", day, set);
+        fs::read_to_string(&filename)
             .unwrap_or_else(|_| panic!("{}", format!("unable to read {:}", filename).as_str()))
             .lines()
             .map(|v| -> T {
@@ -39,10 +41,10 @@ pub mod common {
 
         #[test]
         fn test_read_input() {
-            let lines = read_input::<u32>("input/day01.test");
+            let lines = read_input::<u32>("day01", true);
             assert_eq!(lines[0], 199);
 
-            let lines = read_input::<String>("input/day01.test");
+            let lines = read_input::<String>("day01", true);
             assert_eq!(lines[0], "199");
         }
     }

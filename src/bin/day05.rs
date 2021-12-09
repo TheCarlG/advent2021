@@ -1,6 +1,8 @@
 use advent2021::common;
 use std::str::FromStr;
 
+const DAY: &str = "day05";
+
 const SIZE: usize = 1000;
 
 const GRID_SIZE: usize = SIZE.pow(2);
@@ -118,7 +120,7 @@ fn find(l: &[Line]) -> (usize, usize) {
 
 fn main() {
     common::time_func(|| {
-        let lines = common::read_input::<String>("input/day05.data");
+        let lines = common::read_input::<String>(DAY, false);
         let l = lines
             .iter()
             .map(|row| row.parse::<Line>().unwrap())
@@ -135,7 +137,7 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        let lines = common::read_input::<String>("input/day05.test");
+        let lines = common::read_input::<String>(DAY, true);
         let l = lines
             .iter()
             .map(|row| row.parse::<Line>().unwrap())

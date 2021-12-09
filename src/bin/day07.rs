@@ -1,5 +1,7 @@
 use std::i32::MAX;
 
+const DAY: &str = "day07";
+
 use advent2021::common;
 
 fn part1(mut input: Vec<i32>) -> i32 {
@@ -48,7 +50,7 @@ fn part2(mut input: Vec<i32>) -> i32 {
 
 fn main() {
     common::time_func(|| {
-        let input: Vec<i32> = common::read_input::<String>("input/day07.data")
+        let input: Vec<i32> = common::read_input::<String>(DAY, false)
             .first()
             .unwrap()
             .split(',')
@@ -66,7 +68,7 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        let input: Vec<i32> = common::read_input::<String>("input/day07.test")
+        let input: Vec<i32> = common::read_input::<String>(DAY, true)
             .first()
             .unwrap()
             .split(',')
@@ -78,7 +80,7 @@ mod tests {
 
     #[test]
     fn test_part2() {
-        let input: Vec<i32> = common::read_input::<String>("input/day07.test")
+        let input: Vec<i32> = common::read_input::<String>(DAY, true)
             .first()
             .unwrap()
             .split(',')

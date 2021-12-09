@@ -1,5 +1,7 @@
 use advent2021::common;
 
+const DAY: &str = "day06";
+
 fn simulate(input: &[u128], days: i32) -> u128 {
     let mut data = [0_u128; 9];
     for i in input {
@@ -20,7 +22,7 @@ fn simulate(input: &[u128], days: i32) -> u128 {
 
 fn main() {
     common::time_func(|| {
-        let input: Vec<u128> = common::read_input::<String>("input/day06.data")
+        let input: Vec<u128> = common::read_input::<String>(DAY, false)
             .first()
             .unwrap()
             .split(',')
@@ -37,20 +39,8 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_part11() {
-        let input: Vec<u128> = common::read_input::<String>("input/day06.test")
-            .first()
-            .unwrap()
-            .split(',')
-            .map(|v| v.parse::<u128>().unwrap())
-            .collect();
-
-        assert_eq!(simulate(&input, 18), 26);
-    }
-
-    #[test]
     fn test_part1() {
-        let input: Vec<u128> = common::read_input::<String>("input/day06.test")
+        let input: Vec<u128> = common::read_input::<String>(DAY, true)
             .first()
             .unwrap()
             .split(',')
@@ -62,7 +52,7 @@ mod tests {
 
     #[test]
     fn test_part2() {
-        let input: Vec<u128> = common::read_input::<String>("input/day06.test")
+        let input: Vec<u128> = common::read_input::<String>(DAY, true)
             .first()
             .unwrap()
             .split(',')

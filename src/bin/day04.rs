@@ -1,5 +1,7 @@
 use advent2021::common;
 
+const DAY: &str = "day04";
+
 const SIZE: usize = 5;
 const BOARD_SIZE: usize = SIZE.pow(2);
 
@@ -81,7 +83,7 @@ fn play(drawn: &[i32], mut boards: Vec<([i32; BOARD_SIZE], u32)>) -> (i32, i32) 
 
 fn main() {
     common::time_func(|| {
-        let lines = common::read_input::<String>("input/day04.data");
+        let lines = common::read_input::<String>(DAY, false);
         let (drawn, boards) = parse(lines);
 
         let (part1, part2) = play(&drawn, boards);
@@ -96,19 +98,19 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        let lines = common::read_input::<String>("input/day04.test");
+        let lines = common::read_input::<String>(DAY, true);
         let (drawn, boards) = parse(lines);
 
         assert_eq!(play(&drawn, boards).0, 4512);
 
-        let lines = common::read_input::<String>("input/day04-2.test");
+        let lines = common::read_input::<String>("day04-2", true);
         let (drawn, boards) = parse(lines);
         assert_eq!(play(&drawn, boards).0, 2772);
     }
 
     #[test]
     fn test_part2() {
-        let lines = common::read_input::<String>("input/day04.test");
+        let lines = common::read_input::<String>(DAY, true);
         let (drawn, boards) = parse(lines);
         assert_eq!(play(&drawn, boards).1, 1924);
     }
