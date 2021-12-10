@@ -1,5 +1,5 @@
 #!/bin/bash
-for e in $(find target/release/ -maxdepth 1 -executable -type f -name 'day*' | sort); do
+for e in $(find target/release/ -maxdepth 1 -executable -type f -name 'day*' | sort | tail -5); do
         n=$(echo $e | cut -d/ -f3)
         echo "::set-output name=$n-name::**$n**"
         i=0
