@@ -10,7 +10,10 @@ pub mod common {
         f();
         let duration = start.elapsed();
 
-        println!("Time: {:.7}ms", duration.as_secs_f64() * 1000.0);
+        println!(
+            "Execution time (ms): {:.11}",
+            duration.as_secs_f64() * 1000.0
+        );
     }
 
     #[allow(dead_code)]
