@@ -79,7 +79,33 @@ fn part1(g: &mut Grid) -> i32 {
 }
 
 fn part2(g: &mut Grid) -> i32 {
-    0
+    let mut res = 0;
+
+    loop {
+        res += 1;
+        let mut flashed: HashSet<Point> = HashSet::new();
+
+        for y in 0..SIZE {
+            for x in 0..SIZE {
+                if !flashed.contains(&(x, y)) {
+                    g.grid[y][x] += 1;
+                    if g.grid[y][x] > 9 {
+                        g.flash((x, y), &mut flashed);
+                    }
+                }
+            }
+        }
+
+        if g.grid
+            .iter()
+            .fold(0, |acc, row| acc + row.iter().sum::<i32>())
+            == 0
+        {
+            break;
+        }
+    }
+
+    res
 }
 
 fn read_input(day: &str, test: bool) -> Grid {
@@ -107,7 +133,7 @@ fn main() {
         let mut grid = read_input(DAY, false);
 
         println!("Part01: {}", part1(&mut grid));
-        println!("Part02: {}", part2(&mut grid));
+        println!("Part02: {}", part2(&mut grid) + 100);
     });
 }
 
@@ -122,9 +148,8 @@ mod tests {
     }
 
     #[test]
-    #[ignore]
     fn test_part2() {
         let mut grid = read_input(DAY, true);
-        assert_eq!(part1(&mut grid), 0);
+        assert_eq!(part2(&mut grid), 195);
     }
 }
