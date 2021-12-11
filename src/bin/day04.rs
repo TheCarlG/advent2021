@@ -87,8 +87,8 @@ fn main() {
         let (drawn, boards) = parse(lines);
 
         let (part1, part2) = play(&drawn, boards);
-        println!("Part01: {}", part1);
-        println!("Part02: {}", part2);
+        println!("Part 1: {}", part1);
+        println!("Part 2: {}", part2);
     });
 }
 

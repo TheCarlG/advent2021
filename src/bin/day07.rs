@@ -54,8 +54,8 @@ fn main() {
             .collect();
         input.sort_unstable();
 
-        println!("Part01: {}", part1(&input));
-        println!("Part02: {}", part2(&input));
+        println!("Part 1: {}", part1(&input));
+        println!("Part 2: {}", part2(&input));
     });
 }
 

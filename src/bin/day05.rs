@@ -126,8 +126,8 @@ fn main() {
             .map(|row| row.parse::<Line>().unwrap())
             .collect::<Vec<Line>>();
         let (p1, p2) = find(&l);
-        println!("Part01: {}", p1);
-        println!("Part02: {}", p2);
+        println!("Part 1: {}", p1);
+        println!("Part 2: {}", p2);
     });
 }
 

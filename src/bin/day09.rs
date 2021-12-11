@@ -125,10 +125,10 @@ fn main() {
         let grid = read_input(DAY, false);
 
         let low = grid.lowpoints();
-        println!("Part01: {}", part1(&low));
+        println!("Part 1: {}", part1(&low));
 
         let basins = grid.basins(&low);
-        println!("Part02: {}", part2(basins));
+        println!("Part 2: {}", part2(basins));
     });
 }
 

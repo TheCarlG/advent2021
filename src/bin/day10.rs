@@ -94,8 +94,8 @@ fn main() {
     common::time_func(|| {
         let lines = common::read_input::<String>(DAY, false);
 
-        println!("Part01: {}", part1(&lines));
-        println!("Part02: {}", part2(&lines));
+        println!("Part 1: {}", part1(&lines));
+        println!("Part 2: {}", part2(&lines));
     });
 }
 

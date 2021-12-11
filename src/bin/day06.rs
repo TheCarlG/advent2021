@@ -29,8 +29,8 @@ fn main() {
             .map(|v| v.parse::<u128>().unwrap())
             .collect();
 
-        println!("Part01: {}", simulate(&input, 80));
-        println!("Part02: {}", simulate(&input, 256));
+        println!("Part 1: {}", simulate(&input, 80));
+        println!("Part 2: {}", simulate(&input, 256));
     });
 }
 

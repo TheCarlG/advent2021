@@ -132,8 +132,8 @@ fn main() {
     common::time_func(|| {
         let mut grid = read_input(DAY, false);
 
-        println!("Part01: {}", part1(&mut grid));
-        println!("Part02: {}", part2(&mut grid) + 100);
+        println!("Part 1: {}", part1(&mut grid));
+        println!("Part 2: {}", part2(&mut grid) + 100);
     });
 }
 
