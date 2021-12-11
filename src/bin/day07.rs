@@ -4,10 +4,8 @@ const DAY: &str = "day07";
 
 use advent2021::common;
 
-fn part1(mut input: Vec<i32>) -> i32 {
+fn part1(input: &[i32]) -> i32 {
     let n = input.len();
-
-    input.sort_unstable();
 
     let x = if n % 2 == 1 {
         input[n / 2]
@@ -23,9 +21,7 @@ fn part1(mut input: Vec<i32>) -> i32 {
     s
 }
 
-fn part2(mut input: Vec<i32>) -> i32 {
-    input.sort_unstable();
-
+fn part2(input: &[i32]) -> i32 {
     let n = input.len();
 
     let low = input[0];
@@ -50,15 +46,16 @@ fn part2(mut input: Vec<i32>) -> i32 {
 
 fn main() {
     common::time_func(|| {
-        let input: Vec<i32> = common::read_input::<String>(DAY, false)
+        let mut input: Vec<i32> = common::read_input::<String>(DAY, false)
             .first()
             .unwrap()
             .split(',')
             .map(|v| v.parse::<i32>().unwrap())
             .collect();
+        input.sort_unstable();
 
-        println!("Part01: {}", part1(input.clone()));
-        println!("Part02: {}", part2(input));
+        println!("Part01: {}", part1(&input));
+        println!("Part02: {}", part2(&input));
     });
 }
 
@@ -68,25 +65,27 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        let input: Vec<i32> = common::read_input::<String>(DAY, true)
+        let mut input: Vec<i32> = common::read_input::<String>(DAY, true)
             .first()
             .unwrap()
             .split(',')
             .map(|v| v.parse::<i32>().unwrap())
             .collect();
+        input.sort_unstable();
 
-        assert_eq!(part1(input), 37);
+        assert_eq!(part1(&input), 37);
     }
 
     #[test]
     fn test_part2() {
-        let input: Vec<i32> = common::read_input::<String>(DAY, true)
+        let mut input: Vec<i32> = common::read_input::<String>(DAY, true)
             .first()
             .unwrap()
             .split(',')
             .map(|v| v.parse::<i32>().unwrap())
             .collect();
+        input.sort_unstable();
 
-        assert_eq!(part2(input), 168);
+        assert_eq!(part2(&input), 168);
     }
 }
