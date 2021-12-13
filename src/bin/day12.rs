@@ -3,7 +3,6 @@ use core::fmt;
 use std::{
     collections::{HashMap, HashSet},
     fmt::Display,
-    io::Write,
 };
 
 const DAY: &str = "day12";
@@ -71,18 +70,18 @@ impl<'a> Map<'a> {
         path: &mut Vec<&'a str>,
         ext_search: &mut bool,
     ) -> i32 {
+        path.push(start);
         if start == stop {
             println!("{:?}", path);
+            path.pop();
             return 1;
         }
         let n = &self.nodes[&start];
 
-        let mut ext_updated = false;
+        let val = visited.entry(start).or_insert(0);
         if !n.big {
-            let val = visited.entry(start).or_insert(0);
             *val += 1;
-            if *val == 2 && *ext_search {
-                ext_updated = true;
+            if *val >= 2 && *ext_search {
                 *ext_search = false;
             }
         }
@@ -91,15 +90,21 @@ impl<'a> Map<'a> {
 
         for adj in &n.adjecent {
             let visits = *visited.get(adj).unwrap_or(&0);
-            if *adj != "start" && (visits < 1 || visits <= 2 && *ext_search) {
-                path.push(start);
+            if *adj != "start" && (visits < 1 || (visits < 2 && *ext_search)) {
                 num += self.find_path_to2(*adj, stop, visited, path, ext_search);
+                if *adj == stop {
+                    break;
+                }
             }
         }
-        visited.remove_entry(&start);
+
         path.pop();
-        if ext_updated {
-            *ext_search = true;
+        let val = visited.get_mut(start).unwrap();
+        if *val > 0 {
+            if *val == 2 {
+                *ext_search = true;
+            }
+            *val -= 1;
         }
 
         num
@@ -155,12 +160,17 @@ fn part2(lines: &[String]) -> i32 {
     let mut path: Vec<&str> = Vec::new();
     num += map.find_path_to2("start", "end", &mut visited, &mut path, &mut true);
 
+    println!();
+    for n in map.nodes {
+        println!("{:?}", n);
+    }
+
     num
 }
 
 fn main() {
     common::time_func(|| {
-        let lines = common::read_input::<String>(DAY, false);
+        let lines = common::read_input::<String>(DAY, true);
 
         println!("Part 1: {}", part1(&lines));
         println!("Part 2: {}", part2(&lines));
@@ -188,14 +198,12 @@ mod tests {
     }
 
     #[test]
-    #[ignore]
     fn test_part2() {
         let lines = common::read_input::<String>(DAY, true);
         assert_eq!(part2(&lines), 36);
     }
 
     #[test]
-    #[ignore]
     fn test_part2_2() {
         let lines = common::read_input::<String>("day12-2", true);
         assert_eq!(part2(&lines), 103);
