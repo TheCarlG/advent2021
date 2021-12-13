@@ -67,13 +67,9 @@ impl<'a> Map<'a> {
         start: &'a str,
         stop: &'a str,
         visited: &mut HashMap<&'a str, i32>,
-        path: &mut Vec<&'a str>,
         ext_search: &mut bool,
     ) -> i32 {
-        path.push(start);
         if start == stop {
-            println!("{:?}", path);
-            path.pop();
             return 1;
         }
         let n = &self.nodes[&start];
@@ -91,14 +87,10 @@ impl<'a> Map<'a> {
         for adj in &n.adjecent {
             let visits = *visited.get(adj).unwrap_or(&0);
             if *adj != "start" && (visits < 1 || (visits < 2 && *ext_search)) {
-                num += self.find_path_to2(*adj, stop, visited, path, ext_search);
-                if *adj == stop {
-                    break;
-                }
+                num += self.find_path_to2(*adj, stop, visited, ext_search);
             }
         }
 
-        path.pop();
         let val = visited.get_mut(start).unwrap();
         if *val > 0 {
             if *val == 2 {
@@ -157,20 +149,14 @@ fn part2(lines: &[String]) -> i32 {
 
     let mut num = 0;
     let mut visited: HashMap<&str, i32> = HashMap::new();
-    let mut path: Vec<&str> = Vec::new();
-    num += map.find_path_to2("start", "end", &mut visited, &mut path, &mut true);
-
-    println!();
-    for n in map.nodes {
-        println!("{:?}", n);
-    }
+    num += map.find_path_to2("start", "end", &mut visited, &mut true);
 
     num
 }
 
 fn main() {
     common::time_func(|| {
-        let lines = common::read_input::<String>(DAY, true);
+        let lines = common::read_input::<String>(DAY, false);
 
         println!("Part 1: {}", part1(&lines));
         println!("Part 2: {}", part2(&lines));
@@ -210,7 +196,6 @@ mod tests {
     }
 
     #[test]
-    #[ignore]
     fn test_part2_3() {
         let lines = common::read_input::<String>("day12-3", true);
         assert_eq!(part2(&lines), 3509);
